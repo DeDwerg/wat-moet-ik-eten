@@ -1,0 +1,1 @@
+gradlew clean build && java -jar build/libs/wat-moet-ik-eten-0.1.0.jar
