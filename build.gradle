@@ -26,11 +26,6 @@ repositories {
      mavenLocal()
 }
 
-println "http.proxyHost = " + System.getProperty("http.proxyHost")
-println "https.proxyHost = " + System.getProperty("https.proxyHost")
-println "http.proxyPort = " + System.getProperty("http.proxyPort")
-println "https.proxyPort = " + System.getProperty("https.proxyPort")
-
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
