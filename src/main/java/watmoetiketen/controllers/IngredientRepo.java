@@ -1,29 +1,37 @@
 package watmoetiketen.controllers;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import utils.ExcelWriter;
 import watmoetiketen.Ingredient;
 
 @Repository
 public class IngredientRepo {
     
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+//    @Autowired
+    
 
     public HttpStatus postNieuwIngredient(Ingredient ingredient) {
-        jdbcTemplate.execute("insert into INGREDIENT (naam, eenheid, hoeveelheid) values ('"
-                + ingredient.getNaam() + "', '" + ingredient.getEenheid() + "', '" + ingredient.getHoeveelheid() + "')");
+    	ExcelWriter excelWriter = new ExcelWriter();
+    	excelWriter.kaas();
+    	System.out.println(ingredient);
+//        jdbcTemplate.execute("insert into INGREDIENT (naam, eenheid, hoeveelheid) values ('"
+//                + ingredient.getNaam() + "', '" + ingredient.getEenheid() + "', '" + ingredient.getHoeveelheid() + "')");
         return HttpStatus.CREATED;
     }
 
-    public List<Ingredient> geefAlleIngredienten() {
-        return jdbcTemplate.query("select naam, hoeveelheid, eenheid from INGREDIENT",
-                (rs, rowNum) -> new Ingredient(rs.getString("naam"), rs.getInt("hoeveelheid"), rs.getString("eenheid"), rs.getInt("gerechtid")));
+    public Ingredient geefIngredient() {
+    	Ingredient ingredient = new Ingredient();
+    	ingredient.setEenheid("mg");
+    	ingredient.setGerechtId(1);
+    	ingredient.setHoeveelheid(6);
+    	ingredient.setNaam("getTestIngredient");
+    	
+    	return ingredient;
+//        return jdbcTemplate.query("select naam, hoeveelheid, eenheid from INGREDIENT",
+//                (rs, rowNum) -> new Ingredient(rs.getString("naam"), rs.getInt("hoeveelheid"), rs.getString("eenheid"), rs.getInt("gerechtid")));
     }
     
 //    return jdbcTemplate.query("select id, naam, achternaam from GEBRUIKER",

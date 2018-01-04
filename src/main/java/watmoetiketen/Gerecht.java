@@ -10,7 +10,6 @@ public class Gerecht {
     private String naam;
     private int aantalPersonen;
     private ArrayList<Ingredient> ingredienten;
-    private String eenheid;
     
     public boolean isVegetarisch() {
         return vegetarisch;
@@ -48,10 +47,10 @@ public class Gerecht {
     public void setIngredienten(ArrayList<Ingredient> ingredienten) {
         this.ingredienten = ingredienten;
     }
-    public String getEenheid() {
-        return eenheid;
-    }
-    public void setEenheid(String eenheid) {
-        this.eenheid = eenheid;
-    }
+//    public String getEenheid() {
+//        return eenheid;
+//    }
+//    public void setEenheid(String eenheid) {
+//        this.eenheid = eenheid;
+//    }
 }

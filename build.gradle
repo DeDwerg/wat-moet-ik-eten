@@ -38,5 +38,6 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-jdbc', version: '5.0.2.RELEASE'
     compile("org.springframework.boot:spring-boot-starter-jetty")
     compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
     testCompile("junit:junit")
 }
