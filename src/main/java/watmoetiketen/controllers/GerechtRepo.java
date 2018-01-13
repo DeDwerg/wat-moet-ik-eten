@@ -1,10 +1,13 @@
 package watmoetiketen.controllers;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
+import utils.ExcelWriter;
+import watmoetiketen.Gebruiker;
 import watmoetiketen.Gerecht;
 import watmoetiketen.Ingredient;
 
@@ -15,51 +18,33 @@ public class GerechtRepo {
 //    JdbcTemplate jdbcTemplate;
 
     public HttpStatus postNieuwGerecht(Gerecht gerecht) {
-    	System.out.println(gerecht);
-    	System.out.println(gerecht.getNaam());
-    	System.out.println(gerecht.getIngredienten());
+    	ExcelWriter excelWriter = new ExcelWriter();
+    	excelWriter.maakNieuwGerecht(gerecht);
+    	// nog iets met ingredienten aanmaken
 //        jdbcTemplate.execute("insert into INGREDIENT (naam, eenheid, hoeveelheid) values ('"
 //                + ingredient.getNaam() + "', '" + ingredient.getEenheid() + "', '" + ingredient.getHoeveelheid() + "')");
         return HttpStatus.CREATED;
     }
     
-    public Gerecht geefGerecht() {
-    	System.err.println("in geefgerecht");
-    	Ingredient ingredient1 = new Ingredient();
-    	ingredient1.setEenheid("mg");
-    	ingredient1.setGerechtId(1);
-    	ingredient1.setHoeveelheid(6);
-    	ingredient1.setNaam("kaas");
-    	
-    	Ingredient ingredient2 = new Ingredient();
-    	ingredient2.setEenheid("mg");
-    	ingredient2.setGerechtId(1);
-    	ingredient2.setHoeveelheid(6);
-    	ingredient2.setNaam("worst");
-    	
-    	ArrayList <Ingredient> ingredienten = new ArrayList<>();
-    	ingredienten.add(ingredient1);
-    	ingredienten.add(ingredient2);
-    	
-    	Gerecht gerecht = new Gerecht();
-    	gerecht.setAantalPersonen(1);
-    	gerecht.setIngredienten(ingredienten);
-    	gerecht.setNaam("kaasEnWorst");
-    	gerecht.setVegetarisch(true);
-    	gerecht.setVis(false);
-    	gerecht.setVlees(false);
-    	
-    	return gerecht;
+    public void verwijderGerecht(Gerecht gerecht) {
+    	ExcelWriter excelWriter = new ExcelWriter();
+    	// nog iets met ingredienten verwijderen
+    	excelWriter.verwijderGerecht(gerecht);
     }
-
-//    public List<Ingredient> geefAlleIngredienten() {
-//    	List<Ingredient> ingredienten = new ArrayList<>();
-//    	Ingredient ingredient = new Ingredient();
-//    	ingredient.setEenheid("mg");
-//    	ingredient.setGerechtId(1);
-//    	ingredient.setHoeveelheid(6);
-//    	ingredient.setNaam("getTestIngredient");
-//    	ingredienten.add(ingredient);
+    
+    public Gerecht zoekRandomGerecht(Gebruiker gebruiker) {
+    	// nog iets met ingredienten ohalen
+    	ExcelWriter excelWriter = new ExcelWriter();
+    	Optional<Gerecht> optionalGerecht = excelWriter.zoekRandomGerecht(gebruiker);
+    	if (optionalGerecht.isPresent()){
+    		return optionalGerecht.get();
+    	}
+    	else {
+    		// iets met not found
+    		return null;
+    	}
+    }
+    
 //    	
 //    	return ingredienten;
 ////        return jdbcTemplate.query("select naam, hoeveelheid, eenheid from INGREDIENT",

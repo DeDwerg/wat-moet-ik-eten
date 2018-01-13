@@ -4,13 +4,33 @@ import java.util.ArrayList;
 
 public class Gerecht {
 
+//	excelvolgorde: id naam	vis	vlees	aantalpersonen	gebruikerId
+	
     private boolean vegetarisch;
     private boolean vis;
     private boolean vlees;
     private String naam;
     private int aantalPersonen;
     private ArrayList<Ingredient> ingredienten;
+    private int gebruikerId;
+    private int id;
     
+    public Gerecht(String naam, boolean vis, boolean vlees, int aantalPersonen, int gebruikerId) {
+    	this.naam = naam;
+    	this.vis = vis;
+    	this. vlees = vlees;
+    	this.aantalPersonen = aantalPersonen;
+    	this.gebruikerId = gebruikerId;
+    }
+    
+    public Gerecht(){}
+    
+    public void setId(int id) {
+    	this.id = id;
+    }
+    public int getId() {
+    	return this.id;
+    }
     public boolean isVegetarisch() {
         return vegetarisch;
     }
@@ -47,10 +67,11 @@ public class Gerecht {
     public void setIngredienten(ArrayList<Ingredient> ingredienten) {
         this.ingredienten = ingredienten;
     }
-//    public String getEenheid() {
-//        return eenheid;
-//    }
-//    public void setEenheid(String eenheid) {
-//        this.eenheid = eenheid;
-//    }
+    public void setGebruikerId(int gebruikerId) {
+    	this.gebruikerId = gebruikerId;
+    }
+    public int getGebruikerId() {
+    	return gebruikerId;
+    }
+
 }

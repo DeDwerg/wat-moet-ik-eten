@@ -1,12 +1,8 @@
-ingredient:
-
-{"naam": "ingredient", "hoeveelheid": 6, "eenheid": "mg", "gerechtId": 1}
-
 gebruiker:
 {
-"id" : int
-"naam" : string
-"wachtwoord" : string
+"id" : 1,
+"naam" : "kaas",
+"wachtwoord" : "kaas"
 }
 
 gerecht:
@@ -25,9 +21,3 @@ gerecht:
     "gerehct"             : "<String>",
   }  ]
 }
-
-
-
-
-getrandomgerecht
-voeggerechttoe

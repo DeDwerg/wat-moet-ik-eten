@@ -10,23 +10,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import watmoetiketen.Gebruiker;
 import watmoetiketen.Gerecht;
-import watmoetiketen.Ingredient;
 
 //@Slf4j
 @CrossOrigin
 @RestController
 public class Controller {
 
-	private IngredientRepo ingredientRepo;
 	private GerechtRepo gerechtRepo;
+	private GebruikerRepo gebruikerRepo;
 
 	@Autowired
 	public Controller(
-			IngredientRepo ingredientRepo,
-			GerechtRepo gerechtRepo) {
-		this.ingredientRepo = ingredientRepo;
+			GerechtRepo gerechtRepo,
+			GebruikerRepo gebruikerRepo
+			) {
 		this.gerechtRepo = gerechtRepo;
+		this.gebruikerRepo = gebruikerRepo;
 	}
 
 	@RequestMapping("/")
@@ -34,15 +35,18 @@ public class Controller {
 		return "c'est la banana, mjam, mjam";
 	}
 
-	@GetMapping(value = "/get/ingredient")
-	public Ingredient geefIngredient() {
-		return ingredientRepo.geefIngredient();
+	
+	// werkt goed
+	@PostMapping(value = "/post/gebruiker")
+	public ResponseEntity postGebruiker(@RequestBody Gebruiker gebruiker) {
+		HttpStatus status = gebruikerRepo.maakNieuweGebruiker(gebruiker);
+		return new ResponseEntity(status);
 	}
-
-	@PostMapping(value = "/post/ingredient")
-	public ResponseEntity<Ingredient> postIngredient(@RequestBody Ingredient ingredient) {
-		HttpStatus status = ingredientRepo.postNieuwIngredient(ingredient);
-		return new ResponseEntity<Ingredient>(ingredient, status);
+	
+	@PostMapping(value = "/login/gebruiker")
+	public ResponseEntity login(@RequestBody Gebruiker gebruiker) {
+		HttpStatus status = gebruikerRepo.loginGebruiker(gebruiker);
+		return new ResponseEntity(status);
 	}
 	
 	@PostMapping(value = "/post/gerecht")
@@ -52,8 +56,14 @@ public class Controller {
 	}
 	
 	@GetMapping(value = "/get/gerecht")
-	public Gerecht geefGerecht() {
-		return gerechtRepo.geefGerecht();
+	public Gerecht zoekRandomGerecht(@RequestBody Gebruiker gebruiker) {
+		return gerechtRepo.zoekRandomGerecht(gebruiker);
+	}
+	
+	@PostMapping(value = "/verwijder/gerecht")
+	public ResponseEntity verwijderGerecht(@RequestBody Gerecht gerecht) {
+		gerechtRepo.verwijderGerecht(gerecht);
+		return new ResponseEntity(HttpStatus.OK);
 	}
 
 }
