@@ -35,7 +35,6 @@ public class Controller {
 		return "c'est la banana, mjam, mjam";
 	}
 
-	
 	// werkt goed
 	@PostMapping(value = "/post/gebruiker")
 	public ResponseEntity postGebruiker(@RequestBody Gebruiker gebruiker) {
@@ -43,19 +42,22 @@ public class Controller {
 		return new ResponseEntity(status);
 	}
 	
+	// werkt goed
 	@PostMapping(value = "/login/gebruiker")
 	public ResponseEntity login(@RequestBody Gebruiker gebruiker) {
 		HttpStatus status = gebruikerRepo.loginGebruiker(gebruiker);
 		return new ResponseEntity(status);
 	}
 	
+	// werkt goed
 	@PostMapping(value = "/post/gerecht")
 	public ResponseEntity<Gerecht> postGerecht(@RequestBody Gerecht gerecht) {
 		HttpStatus status = gerechtRepo.postNieuwGerecht(gerecht);
 		return new ResponseEntity<Gerecht>(gerecht, status);
 	}
 	
-	@GetMapping(value = "/get/gerecht")
+	// gerecht ophalen werkt. corresponderende ingredienten nog niet.
+	@PostMapping(value = "/get/gerecht")
 	public Gerecht zoekRandomGerecht(@RequestBody Gebruiker gebruiker) {
 		return gerechtRepo.zoekRandomGerecht(gebruiker);
 	}

@@ -20,6 +20,7 @@ public class GerechtRepo {
     public HttpStatus postNieuwGerecht(Gerecht gerecht) {
     	ExcelWriter excelWriter = new ExcelWriter();
     	excelWriter.maakNieuwGerecht(gerecht);
+    	excelWriter.maakNieuwIngredient(gerecht.getIngredienten());
     	// nog iets met ingredienten aanmaken
 //        jdbcTemplate.execute("insert into INGREDIENT (naam, eenheid, hoeveelheid) values ('"
 //                + ingredient.getNaam() + "', '" + ingredient.getEenheid() + "', '" + ingredient.getHoeveelheid() + "')");
