@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface GebruikerRepository extends JpaRepository<Gebruiker, Integer> {
     
-    @Query("SELECT g FROM gebruiker g where g.naam =?1 AND g.wachtwoord =?2")
+    @Query("SELECT g FROM Gebruiker g where g.naam =?1 AND g.wachtwoord =?2")
     Optional<Gebruiker> getGebruiker(String naam, String wachtwoord);
 
 }

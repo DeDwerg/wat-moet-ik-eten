@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface IngredientRepository extends JpaRepository<Ingredient, Integer>{
 
-    @Query("SELECT * FROM ingredient where gerecht_id =?1")
+    @Query("FROM Ingredient where gerechtId =?1")
     Optional<Ingredient[]> getIngredienten(Integer gerechtId);
 
 }

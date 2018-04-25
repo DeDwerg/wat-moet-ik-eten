@@ -25,9 +25,10 @@ public class GerechtRepo {
     private IngredientRepository ingredientRepository;
 
     public HttpStatus postNieuwGerecht(Gerecht gerecht) {
+        // iets met ingredienten gaan doen dat die toegevoegd worden (mapping in gerecht klas gaat niet)
         gerechtRepository.saveAndFlush(gerecht);
-        for (Ingredient ingredient : gerecht.getIngredient())
-            ingredientRepository.saveAndFlush(ingredient);
+//        for (Ingredient ingredient : optionalIngredienten.get())
+//            ingredientRepository.saveAndFlush(ingredient);
         return HttpStatus.CREATED;
     }
 
@@ -35,7 +36,7 @@ public class GerechtRepo {
 
         HttpStatus httpStatus;
 
-        Optional<Gerecht> optionalGerecht = gerechtRepository.getGerecht(gerecht, gebruikerId);
+        Optional<Gerecht> optionalGerecht = gerechtRepository.getGerecht(gerecht.getNaam(), gebruikerId);
         Optional<Ingredient[]> optionalIngredienten = ingredientRepository.getIngredienten(gerecht.getId());
         if (optionalGerecht.isPresent()) {
             if (optionalIngredienten.isPresent()) {
