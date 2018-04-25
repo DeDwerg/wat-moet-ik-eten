@@ -1,58 +1,83 @@
 package watmoetiketen.controllers;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Repository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
-import utils.ExcelWriter;
-import watmoetiketen.Gebruiker;
-import watmoetiketen.Gerecht;
-import watmoetiketen.Ingredient;
+import watmoetiketen.dao.Gebruiker;
+import watmoetiketen.dao.Gerecht;
+import watmoetiketen.dao.GerechtRepository;
+import watmoetiketen.dao.Ingredient;
+import watmoetiketen.dao.IngredientRepository;
 
-@Repository
+@Service
 public class GerechtRepo {
-    
-//    @Autowired
-//    JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private GerechtRepository gerechtRepository;
+
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
     public HttpStatus postNieuwGerecht(Gerecht gerecht) {
-    	ExcelWriter excelWriter = new ExcelWriter();
-    	excelWriter.maakNieuwGerecht(gerecht);
-    	excelWriter.maakNieuwIngredient(gerecht.getIngredienten());
-    	// nog iets met ingredienten aanmaken
-//        jdbcTemplate.execute("insert into INGREDIENT (naam, eenheid, hoeveelheid) values ('"
-//                + ingredient.getNaam() + "', '" + ingredient.getEenheid() + "', '" + ingredient.getHoeveelheid() + "')");
+        gerechtRepository.saveAndFlush(gerecht);
+        for (Ingredient ingredient : gerecht.getIngredient())
+            ingredientRepository.saveAndFlush(ingredient);
         return HttpStatus.CREATED;
     }
-    
-    public void verwijderGerecht(Gerecht gerecht) {
-    	ExcelWriter excelWriter = new ExcelWriter();
-    	// nog iets met ingredienten verwijderen
-    	excelWriter.verwijderGerecht(gerecht);
-    }
-    
-    public Gerecht zoekRandomGerecht(Gebruiker gebruiker) {
-    	// nog iets met ingredienten ohalen
-    	ExcelWriter excelWriter = new ExcelWriter();
-    	Optional<Gerecht> optionalGerecht = excelWriter.zoekRandomGerecht(gebruiker);
-    	if (optionalGerecht.isPresent()){
-    		return optionalGerecht.get();
-    	}
-    	else {
-    		// iets met not found
-    		return null;
-    	}
-    }
-    
-//    	
-//    	return ingredienten;
-////        return jdbcTemplate.query("select naam, hoeveelheid, eenheid from INGREDIENT",
-////                (rs, rowNum) -> new Ingredient(rs.getString("naam"), rs.getInt("hoeveelheid"), rs.getString("eenheid"), rs.getInt("gerechtid")));
-//    }
-    
-//    return jdbcTemplate.query("select id, naam, achternaam from GEBRUIKER",
-//            (rs, rowNum) -> new Gebruiker(rs.getInt("id"), rs.getString("naam"), rs.getString("achternaam")));
 
+    public ResponseEntity verwijderGerecht(int gebruikerId, Gerecht gerecht) {
+
+        HttpStatus httpStatus;
+
+        Optional<Gerecht> optionalGerecht = gerechtRepository.getGerecht(gerecht, gebruikerId);
+        Optional<Ingredient[]> optionalIngredienten = ingredientRepository.getIngredienten(gerecht.getId());
+        if (optionalGerecht.isPresent()) {
+            if (optionalIngredienten.isPresent()) {
+                for (Ingredient ingredient : optionalIngredienten.get()) {
+                    ingredientRepository.delete(ingredient);
+                }
+                gerechtRepository.delete(gerecht);
+                httpStatus = HttpStatus.OK;
+            } else {
+                httpStatus = HttpStatus.NOT_FOUND;
+            }
+
+        } else {
+            httpStatus = HttpStatus.NOT_FOUND;
+        }
+        return new ResponseEntity(httpStatus);
+    }
+
+    public ResponseEntity zoekRandomGerecht(Gebruiker gebruiker) {
+
+        List<Gerecht> gerechten = new ArrayList<>();
+
+        Optional<Gerecht[]> optionalGerechten = gerechtRepository.getGerechten(gebruiker.getId());
+        if (optionalGerechten.isPresent()) {
+            for (Gerecht gerecht : optionalGerechten.get()) {
+                gerechten.add(gerecht);
+            }
+            int randomGetal = (int) (Math.random() * gerechten.size() + 1);
+            Gerecht gerecht = gerechten.get(randomGetal - 1);
+            return new ResponseEntity(gerecht, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+    }
+    
+    public ResponseEntity getAlleGerechten(Gebruiker gebruiker) {
+        List<Gerecht> gerechten = new ArrayList<>();
+        Optional<Gerecht[]> optionalGerechten = gerechtRepository.getGerechten(gebruiker.getId());
+        if (optionalGerechten.isPresent()) {
+            return new ResponseEntity(optionalGerechten.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+    }
 }

@@ -1,25 +1,44 @@
 package watmoetiketen.controllers;
 
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import utils.ExcelWriter;
-import watmoetiketen.Gebruiker;
+import watmoetiketen.dao.Gebruiker;
+import watmoetiketen.dao.GebruikerRepository;
 
 @Slf4j
-@Repository
+@Service
 public class GebruikerRepo {
-	
-	public HttpStatus maakNieuweGebruiker(Gebruiker gebruiker) {
-		
-		ExcelWriter excelWriter = new ExcelWriter();
-		return excelWriter.maakNieuweGebruiker(gebruiker);
-	}
-	
-	public HttpStatus loginGebruiker(Gebruiker gebruiker) {
-		ExcelWriter excelWriter = new ExcelWriter();
-		return excelWriter.loginGebruiker(gebruiker);
-	}
 
+    @Autowired
+    private GebruikerRepository gebruikerRepository;
+
+    public HttpStatus maakNieuweGebruiker(Gebruiker gebruiker) {
+        HttpStatus httpStatus;
+        Optional<Gebruiker> optionalGebruiker = gebruikerRepository.getGebruiker(gebruiker.getNaam(),
+                gebruiker.getWachtwoord());
+        if (optionalGebruiker.isPresent()) {
+            httpStatus = HttpStatus.CONFLICT;
+        } else {
+            gebruikerRepository.saveAndFlush(gebruiker);
+            httpStatus = HttpStatus.CREATED;
+        }
+        return httpStatus;
+    }
+
+    public HttpStatus loginGebruiker(Gebruiker gebruiker) {
+        HttpStatus httpStatus;
+        Optional<Gebruiker> optionalGebruiker = gebruikerRepository.getGebruiker(gebruiker.getNaam(),
+                gebruiker.getWachtwoord());
+        if (optionalGebruiker.isPresent()) {
+            httpStatus = HttpStatus.OK;
+        } else {
+            httpStatus = HttpStatus.NOT_FOUND;
+        }
+        return httpStatus;
+    }
 }

@@ -1,17 +1,17 @@
-package watmoetiketen;
-
-import java.util.ArrayList;
-
-public class Boodschappenlijst {
-
-    private ArrayList<Gerecht> gerechten;
-
-    public ArrayList<Gerecht> getGerechten() {
-        return gerechten;
-    }
-
-    public void setGerechten(ArrayList<Gerecht> gerechten) {
-        this.gerechten = gerechten;
-    }
-    
-}
+//package watmoetiketen;
+//
+//import java.util.List;
+//
+//public class Boodschappenlijst {
+//
+//    private List<Gerecht> gerechten;
+//
+//    public List<Gerecht> getGerechten() {
+//        return gerechten;
+//    }
+//
+//    public void setGerechten(List<Gerecht> gerechten) {
+//        this.gerechten = gerechten;
+//    }
+//    
+//}

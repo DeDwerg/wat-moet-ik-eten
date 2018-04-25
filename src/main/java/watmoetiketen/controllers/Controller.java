@@ -4,68 +4,74 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import watmoetiketen.Gebruiker;
-import watmoetiketen.Gerecht;
+import lombok.extern.slf4j.Slf4j;
+import watmoetiketen.dao.Gebruiker;
+import watmoetiketen.dao.Gerecht;
 
-//@Slf4j
+@Slf4j
 @CrossOrigin
 @RestController
 public class Controller {
 
-	private GerechtRepo gerechtRepo;
-	private GebruikerRepo gebruikerRepo;
+    private GerechtRepo gerechtRepo;
+    private GebruikerRepo gebruikerRepo;
 
-	@Autowired
-	public Controller(
-			GerechtRepo gerechtRepo,
-			GebruikerRepo gebruikerRepo
-			) {
-		this.gerechtRepo = gerechtRepo;
-		this.gebruikerRepo = gebruikerRepo;
-	}
+    @Autowired
+    public Controller(GerechtRepo gerechtRepo, GebruikerRepo gebruikerRepo) {
+        this.gerechtRepo = gerechtRepo;
+        this.gebruikerRepo = gebruikerRepo;
+    }
 
-	@RequestMapping("/")
-	public String index() {
-		return "c'est la banana, mjam, mjam";
-	}
+    @RequestMapping("/")
+    public String index() {
+        return "Dit is de default page waar niemand zou moeten kunnen komen.";
+    }
 
-	// werkt goed
-	@PostMapping(value = "/post/gebruiker")
-	public ResponseEntity postGebruiker(@RequestBody Gebruiker gebruiker) {
-		HttpStatus status = gebruikerRepo.maakNieuweGebruiker(gebruiker);
-		return new ResponseEntity(status);
-	}
-	
-	// werkt goed
-	@PostMapping(value = "/login/gebruiker")
-	public ResponseEntity login(@RequestBody Gebruiker gebruiker) {
-		HttpStatus status = gebruikerRepo.loginGebruiker(gebruiker);
-		return new ResponseEntity(status);
-	}
-	
-	// werkt goed
-	@PostMapping(value = "/post/gerecht")
-	public ResponseEntity<Gerecht> postGerecht(@RequestBody Gerecht gerecht) {
-		HttpStatus status = gerechtRepo.postNieuwGerecht(gerecht);
-		return new ResponseEntity<Gerecht>(gerecht, status);
-	}
-	
-	// gerecht ophalen werkt. corresponderende ingredienten nog niet.
-	@PostMapping(value = "/get/gerecht")
-	public Gerecht zoekRandomGerecht(@RequestBody Gebruiker gebruiker) {
-		return gerechtRepo.zoekRandomGerecht(gebruiker);
-	}
-	
-	@PostMapping(value = "/verwijder/gerecht")
-	public ResponseEntity verwijderGerecht(@RequestBody Gerecht gerecht) {
-		gerechtRepo.verwijderGerecht(gerecht);
-		return new ResponseEntity(HttpStatus.OK);
-	}
+    // werkt goed
+    @PostMapping(value = "/post/gebruiker")
+    public ResponseEntity postGebruiker(@RequestBody Gebruiker gebruiker) {
+        HttpStatus status = gebruikerRepo.maakNieuweGebruiker(gebruiker);
+        return new ResponseEntity(status);
+    }
+
+    // werkt goed
+    @PostMapping(value = "/login/gebruiker")
+    public ResponseEntity login(@RequestBody Gebruiker gebruiker) {
+        HttpStatus status = gebruikerRepo.loginGebruiker(gebruiker);
+        log.info("gereturneerde status " + status.value());
+        return new ResponseEntity("{\"statuscode\": " + status.value() + "}", status);
+    }
+
+    // werkt goed
+    @PostMapping(value = "/post/gerecht")
+    public ResponseEntity<Gerecht> postGerecht(@RequestBody Gerecht gerecht) {
+        HttpStatus status = gerechtRepo.postNieuwGerecht(gerecht);
+        return new ResponseEntity<Gerecht>(gerecht, status);
+    }
+
+    // werkt goed
+    @PostMapping(value = "/get/random/gerecht")
+    public ResponseEntity zoekRandomGerecht(@RequestBody Gebruiker gebruiker) {
+        return gerechtRepo.zoekRandomGerecht(gebruiker);
+    }
+
+    // verwijderd niets (gerechten moet nog gebouwd worden)
+    @PostMapping(value = "/verwijder/gerecht/{gebruikerId}")
+    public ResponseEntity verwijderGerecht(@PathVariable int gebruikerId, @RequestBody Gerecht gerecht) {
+        ResponseEntity response = gerechtRepo.verwijderGerecht(gebruikerId, gerecht);
+        return response;
+    }
+
+    @PostMapping(value = "/get/alle/gerechten")
+    public ResponseEntity getAlleGerechten(@RequestBody Gebruiker gebruiker) {
+        log.info("gerechten worden opgehaald voor " + gebruiker.getNaam());
+        return gerechtRepo.getAlleGerechten(gebruiker);
+    }
 
 }

@@ -1,46 +1,36 @@
 package watmoetiketen.controllers;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Repository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
-import utils.ExcelWriter;
-import watmoetiketen.Gerecht;
-import watmoetiketen.Ingredient;
+import watmoetiketen.dao.Gerecht;
+import watmoetiketen.dao.Ingredient;
+import watmoetiketen.dao.IngredientRepository;
 
-@Repository
+@Service
 public class IngredientRepo {
     
-//    @Autowired
-    
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
     public void maakNieuwIngredient(List<Ingredient> ingredienten) {
-    	ExcelWriter excelWriter = new ExcelWriter();
-    	excelWriter.maakNieuwIngredient(ingredienten);
-    	
-
-//        jdbcTemplate.execute("insert into INGREDIENT (naam, eenheid, hoeveelheid) values ('"
-//                + ingredient.getNaam() + "', '" + ingredient.getEenheid() + "', '" + ingredient.getHoeveelheid() + "')");
+        for(Ingredient ingredient: ingredienten) {
+            ingredientRepository.saveAndFlush(ingredient);
+        }
     }
 
-    public List<Ingredient> geefIngredientenBijGerecht(Gerecht gerecht) {
-    	ExcelWriter excelWriter = new ExcelWriter();
-    	return excelWriter.geeftIngredientenBijGerecht(gerecht);
-//        return jdbcTemplate.query("select naam, hoeveelheid, eenheid from INGREDIENT",
-//                (rs, rowNum) -> new Ingredient(rs.getString("naam"), rs.getInt("hoeveelheid"), rs.getString("eenheid"), rs.getInt("gerechtid")));
+    public ResponseEntity geefIngredientenBijGerecht(Gerecht gerecht) {
+        Optional<Ingredient[]> optionalIngredienten = ingredientRepository.getIngredienten(gerecht.getId());
+        if (optionalIngredienten.isPresent()) {
+            return new ResponseEntity(optionalIngredienten.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
-    
-    public void verwijderIngredient(Ingredient ingredient) {
-    	ExcelWriter excelWriter = new ExcelWriter();
-    	excelWriter.verwijderIngredient(ingredient);
-    }
-   
-//    return jdbcTemplate.query("select id, naam, achternaam from GEBRUIKER",
-//            (rs, rowNum) -> new Gebruiker(rs.getInt("id"), rs.getString("naam"), rs.getString("achternaam")));
 
 }
