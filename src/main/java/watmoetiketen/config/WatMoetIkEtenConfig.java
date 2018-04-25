@@ -51,7 +51,7 @@ public class WatMoetIkEtenConfig {
         // no need shutdown, EmbeddedDatabaseFactoryBean will take care of this
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
         return builder.setType(EmbeddedDatabaseType.H2) // .H2 or .DERBY
-//                .addScript("create-db-local.sql")
+                .addScript("create-db.sql")
 //                .addScript("insert-data-local.sql")
                 .build();
     }
