@@ -33,14 +33,12 @@ public class Controller {
         return "Dit is de default page waar niemand zou moeten kunnen komen.";
     }
 
-    // werkt goed
     @PostMapping(value = "/post/gebruiker")
     public ResponseEntity postGebruiker(@RequestBody Gebruiker gebruiker) {
         HttpStatus status = gebruikerRepo.maakNieuweGebruiker(gebruiker);
         return new ResponseEntity(status);
     }
 
-    // werkt goed
     @PostMapping(value = "/login/gebruiker")
     public ResponseEntity login(@RequestBody Gebruiker gebruiker) {
         HttpStatus status = gebruikerRepo.loginGebruiker(gebruiker);
@@ -48,20 +46,17 @@ public class Controller {
         return new ResponseEntity("{\"statuscode\": " + status.value() + "}", status);
     }
 
-    // werkt goed
     @PostMapping(value = "/post/gerecht")
     public ResponseEntity<Gerecht> postGerecht(@RequestBody Gerecht gerecht) {
         HttpStatus status = gerechtRepo.postNieuwGerecht(gerecht);
         return new ResponseEntity<Gerecht>(gerecht, status);
     }
 
-    // werkt goed
     @PostMapping(value = "/get/random/gerecht")
     public ResponseEntity zoekRandomGerecht(@RequestBody Gebruiker gebruiker) {
         return gerechtRepo.zoekRandomGerecht(gebruiker);
     }
 
-    // verwijderd niets (gerechten moet nog gebouwd worden)
     @PostMapping(value = "/verwijder/gerecht/{gebruikerId}")
     public ResponseEntity verwijderGerecht(@PathVariable int gebruikerId, @RequestBody Gerecht gerecht) {
         ResponseEntity response = gerechtRepo.verwijderGerecht(gebruikerId, gerecht);
