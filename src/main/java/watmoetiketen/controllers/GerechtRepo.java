@@ -31,6 +31,19 @@ public class GerechtRepo {
 //            ingredientRepository.saveAndFlush(ingredient);
         return HttpStatus.CREATED;
     }
+    
+//    public HttpStatus maakNieuweGebruiker(Gebruiker gebruiker) {
+//        HttpStatus httpStatus;
+//        Optional<Gebruiker> optionalGebruiker = gebruikerRepository.getGebruiker(gebruiker.getNaam(),
+//                gebruiker.getWachtwoord());
+//        if (optionalGebruiker.isPresent()) {
+//            httpStatus = HttpStatus.CONFLICT;
+//        } else {
+//            gebruikerRepository.saveAndFlush(gebruiker);
+//            httpStatus = HttpStatus.CREATED;
+//        }
+//        return httpStatus;
+//    }
 
     public ResponseEntity verwijderGerecht(int gebruikerId, Gerecht gerecht) {
 

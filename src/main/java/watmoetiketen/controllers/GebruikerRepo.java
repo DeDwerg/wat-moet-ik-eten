@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,15 +31,15 @@ public class GebruikerRepo {
         return httpStatus;
     }
 
-    public HttpStatus loginGebruiker(Gebruiker gebruiker) {
-        HttpStatus httpStatus;
+    public ResponseEntity loginGebruiker(Gebruiker gebruiker) {
+        ResponseEntity entity;
         Optional<Gebruiker> optionalGebruiker = gebruikerRepository.getGebruiker(gebruiker.getNaam(),
                 gebruiker.getWachtwoord());
         if (optionalGebruiker.isPresent()) {
-            httpStatus = HttpStatus.OK;
+            entity = new ResponseEntity(optionalGebruiker.get(), HttpStatus.OK);
         } else {
-            httpStatus = HttpStatus.NOT_FOUND;
+            entity = new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        return httpStatus;
+        return entity;
     }
 }

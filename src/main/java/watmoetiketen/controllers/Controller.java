@@ -33,17 +33,17 @@ public class Controller {
         return "Dit is de default page waar niemand zou moeten kunnen komen.";
     }
 
+    //v
     @PostMapping(value = "/post/gebruiker")
     public ResponseEntity postGebruiker(@RequestBody Gebruiker gebruiker) {
         HttpStatus status = gebruikerRepo.maakNieuweGebruiker(gebruiker);
         return new ResponseEntity(status);
     }
 
+    
     @PostMapping(value = "/login/gebruiker")
     public ResponseEntity login(@RequestBody Gebruiker gebruiker) {
-        HttpStatus status = gebruikerRepo.loginGebruiker(gebruiker);
-        log.info("gereturneerde status " + status.value());
-        return new ResponseEntity("{\"statuscode\": " + status.value() + "}", status);
+        return gebruikerRepo.loginGebruiker(gebruiker);
     }
 
     @PostMapping(value = "/post/gerecht")
