@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import watmoetiketen.dao.Gebruiker;
 import watmoetiketen.dao.GebruikerRepository;
 
+import javax.xml.ws.Response;
+
 @Slf4j
 @Service
 public class GebruikerRepo {
@@ -18,17 +20,17 @@ public class GebruikerRepo {
     @Autowired
     private GebruikerRepository gebruikerRepository;
 
-    public HttpStatus maakNieuweGebruiker(Gebruiker gebruiker) {
-        HttpStatus httpStatus;
+    public ResponseEntity maakNieuweGebruiker(Gebruiker gebruiker) {
+        ResponseEntity entity;
         Optional<Gebruiker> optionalGebruiker = gebruikerRepository.getGebruiker(gebruiker.getNaam(),
                 gebruiker.getWachtwoord());
         if (optionalGebruiker.isPresent()) {
-            httpStatus = HttpStatus.CONFLICT;
+            entity = new ResponseEntity(HttpStatus.CONFLICT);
         } else {
             gebruikerRepository.saveAndFlush(gebruiker);
-            httpStatus = HttpStatus.CREATED;
+            entity = new ResponseEntity(gebruiker, HttpStatus.CREATED);
         }
-        return httpStatus;
+        return entity;
     }
 
     public ResponseEntity loginGebruiker(Gebruiker gebruiker) {

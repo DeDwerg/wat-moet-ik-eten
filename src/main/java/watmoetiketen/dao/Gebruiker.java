@@ -12,7 +12,6 @@ import lombok.Data;
 
 @Entity
 @Table(name="GEBRUIKER", schema="EETDATA")
-@Data
 public class Gebruiker {
     
     @Id
@@ -27,4 +26,27 @@ public class Gebruiker {
     @Column(name = "WACHTWOORD")
     private String wachtwoord;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public String getNaam() {
+        return naam;
+    }
+
+    public String getWachtwoord() {
+        return wachtwoord;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setNaam(String naam) {
+        this.naam = naam;
+    }
+
+    public void setWachtwoord(String wachtwoord) {
+        this.wachtwoord = wachtwoord;
+    }
 }

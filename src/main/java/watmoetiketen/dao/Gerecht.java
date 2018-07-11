@@ -14,7 +14,6 @@ import lombok.Data;
 
 @Entity
 @Table(name = "GERECHT", schema="EETDATA")
-@Data
 public class Gerecht {
     
     @Id
@@ -37,7 +36,55 @@ public class Gerecht {
     
     @Column(name = "GEBRUIKER_ID")
     private Integer gebruikerId;
-    
-//    private List<Ingredient> ingredient;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNaam() {
+        return naam;
+    }
+
+    public void setNaam(String naam) {
+        this.naam = naam;
+    }
+
+    public Boolean getVis() {
+        return vis;
+    }
+
+    public void setVis(Boolean vis) {
+        this.vis = vis;
+    }
+
+    public Boolean getVlees() {
+        return vlees;
+    }
+
+    public void setVlees(Boolean vlees) {
+        this.vlees = vlees;
+    }
+
+    public Integer getAantalPersonen() {
+        return aantalPersonen;
+    }
+
+    public void setAantalPersonen(Integer aantalPersonen) {
+        this.aantalPersonen = aantalPersonen;
+    }
+
+    public Integer getGebruikerId() {
+        return gebruikerId;
+    }
+
+    public void setGebruikerId(Integer gebruikerId) {
+        this.gebruikerId = gebruikerId;
+    }
+
+    //    private List<Ingredient> ingredient;
 
 }

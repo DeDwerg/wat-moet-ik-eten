@@ -1,5 +1,6 @@
 package watmoetiketen.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +12,6 @@ public interface GerechtRepository extends JpaRepository<Gerecht, Integer> {
     Optional<Gerecht> getGerecht(String gerechtNaam, int gebruikerId);
 
     @Query("FROM Gerecht where gebruikerId =?1")
-    Optional<Gerecht[]> getGerechten(Integer gebruikerId);
+    Optional<List<Gerecht>> getGerechten(Integer gebruikerId);
 
 }

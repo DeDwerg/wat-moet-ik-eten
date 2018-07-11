@@ -36,36 +36,43 @@ public class Controller {
     //v
     @PostMapping(value = "/post/gebruiker")
     public ResponseEntity postGebruiker(@RequestBody Gebruiker gebruiker) {
-        HttpStatus status = gebruikerRepo.maakNieuweGebruiker(gebruiker);
-        return new ResponseEntity(status);
+        ResponseEntity entity = gebruikerRepo.maakNieuweGebruiker(gebruiker);
+        System.out.println("gebruiker aanmaken " + gebruiker.getNaam() + " " + entity.getStatusCode());
+        // retourneer ook gebruiker
+        return entity;
     }
 
     
     @PostMapping(value = "/login/gebruiker")
     public ResponseEntity login(@RequestBody Gebruiker gebruiker) {
+        System.out.println("gebruiker inloggen " + gebruiker.getNaam());
+        // retourneer ook gebruiker
         return gebruikerRepo.loginGebruiker(gebruiker);
     }
 
     @PostMapping(value = "/post/gerecht")
     public ResponseEntity<Gerecht> postGerecht(@RequestBody Gerecht gerecht) {
         HttpStatus status = gerechtRepo.postNieuwGerecht(gerecht);
-        return new ResponseEntity<Gerecht>(gerecht, status);
+        System.out.println("gerecht aanmaken " + gerecht.getNaam() + " " + status);
+        return new ResponseEntity(gerecht, status);
     }
 
     @PostMapping(value = "/get/random/gerecht")
     public ResponseEntity zoekRandomGerecht(@RequestBody Gebruiker gebruiker) {
+        System.out.println("gerecht zoeken " + gebruiker.getNaam());
         return gerechtRepo.zoekRandomGerecht(gebruiker);
     }
 
     @PostMapping(value = "/verwijder/gerecht/{gebruikerId}")
     public ResponseEntity verwijderGerecht(@PathVariable int gebruikerId, @RequestBody Gerecht gerecht) {
         ResponseEntity response = gerechtRepo.verwijderGerecht(gebruikerId, gerecht);
+        System.out.println("verwijder gerecht " + gerecht.getNaam() + response.getStatusCode());
         return response;
     }
 
     @PostMapping(value = "/get/alle/gerechten")
     public ResponseEntity getAlleGerechten(@RequestBody Gebruiker gebruiker) {
-        log.info("gerechten worden opgehaald voor " + gebruiker.getNaam());
+        System.out.println("gerechten worden opgehaald voor " + gebruiker.getNaam());
         return gerechtRepo.getAlleGerechten(gebruiker);
     }
 
