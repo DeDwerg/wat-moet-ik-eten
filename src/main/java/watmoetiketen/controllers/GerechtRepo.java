@@ -60,29 +60,14 @@ public class GerechtRepo {
 
         List<Gerecht> gerechten = new ArrayList<>();
 
-        System.out.println("1");
         Optional<List<Gerecht>> optionalGerechten = gerechtRepository.getGerechten(gebruiker.getId());
-        System.out.println("2");
         if (optionalGerechten.isPresent()) {
-            System.out.println("3");
             List<Gerecht> opgehaaldeGerechten = optionalGerechten.get();
-            System.out.println("4");
             opgehaaldeGerechten.forEach(gerecht -> {
                 gerechten.add(gerecht);
             });
-            System.out.println("5");
-
-//            System.out.println("3");
-//            System.out.println(optionalGerechten.get());
-//            for (Gerecht gerecht : optionalGerechten.get()) {
-//                System.out.println("4");
-//                gerechten.add(gerecht);
-//                System.out.println("5");
-//            }
             int randomGetal = (int) (Math.random() * gerechten.size() + 1);
-            System.out.println("6");
             Gerecht gerecht = gerechten.get(randomGetal - 1);
-            System.out.println("7");
             return new ResponseEntity(gerecht, HttpStatus.OK);
         } else {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
