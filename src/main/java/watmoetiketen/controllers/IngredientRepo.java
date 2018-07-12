@@ -25,7 +25,7 @@ public class IngredientRepo {
     }
 
     public ResponseEntity geefIngredientenBijGerecht(Gerecht gerecht) {
-        Optional<Ingredient[]> optionalIngredienten = ingredientRepository.getIngredienten(gerecht.getId());
+        Optional<List<Ingredient>> optionalIngredienten = ingredientRepository.getIngredienten(gerecht.getId());
         if (optionalIngredienten.isPresent()) {
             return new ResponseEntity(optionalIngredienten.get(), HttpStatus.OK);
         } else {

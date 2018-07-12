@@ -1,7 +1,6 @@
 package watmoetiketen.controllers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +15,8 @@ import watmoetiketen.dao.GerechtRepository;
 import watmoetiketen.dao.Ingredient;
 import watmoetiketen.dao.IngredientRepository;
 
+import javax.ws.rs.client.Entity;
+
 @Service
 public class GerechtRepo {
 
@@ -25,11 +26,20 @@ public class GerechtRepo {
     @Autowired
     private IngredientRepository ingredientRepository;
 
-    public HttpStatus postNieuwGerecht(Gerecht gerecht) {
-        // iets met ingredienten gaan doen dat die toegevoegd worden (mapping in gerecht klas gaat niet)
-        gerechtRepository.saveAndFlush(gerecht);
-//        for (Ingredient ingredient : optionalIngredienten.get())
-//            ingredientRepository.saveAndFlush(ingredient);
+    public HttpStatus postNieuwGerecht(watmoetiketen.model.Gerecht gerecht) {
+        Gerecht daoGerecht = new Gerecht();
+        daoGerecht.setAantalPersonen(gerecht.getAantalPersonen());
+        daoGerecht.setGebruikerId(gerecht.getGebruikerId());
+        daoGerecht.setId(gerecht.getId());
+        daoGerecht.setNaam(gerecht.getNaam());
+        daoGerecht.setVis(gerecht.getVis());
+        daoGerecht.setVlees(gerecht.getVlees());
+        int gerechtId = gerechtRepository.saveAndFlush(daoGerecht).getId();
+        
+        for (Ingredient ingredient : gerecht.getIngredienten()) {
+            ingredient.setGerechtId(gerechtId);
+            ingredientRepository.saveAndFlush(ingredient);
+        }
         return HttpStatus.CREATED;
     }
 
@@ -38,7 +48,7 @@ public class GerechtRepo {
         HttpStatus httpStatus;
 
         Optional<Gerecht> optionalGerecht = gerechtRepository.getGerecht(gerecht.getNaam(), gebruikerId);
-        Optional<Ingredient[]> optionalIngredienten = ingredientRepository.getIngredienten(gerecht.getId());
+        Optional<List<Ingredient>> optionalIngredienten = ingredientRepository.getIngredienten(gerecht.getId());
         if (optionalGerecht.isPresent()) {
             if (optionalIngredienten.isPresent()) {
                 for (Ingredient ingredient : optionalIngredienten.get()) {
@@ -75,10 +85,25 @@ public class GerechtRepo {
     }
     
     public ResponseEntity getAlleGerechten(Gebruiker gebruiker) {
-        List<Gerecht> gerechten = new ArrayList<>();
         Optional<List<Gerecht>> optionalGerechten = gerechtRepository.getGerechten(gebruiker.getId());
         if (optionalGerechten.isPresent()) {
-            return new ResponseEntity(optionalGerechten.get(), HttpStatus.OK);
+            List<Gerecht> daoGerechten = optionalGerechten.get();
+            List<watmoetiketen.model.Gerecht> gerechten = new ArrayList<>();
+            for(Gerecht daoGerecht : daoGerechten) {
+                Optional<List<Ingredient>> optionalIngredienten = ingredientRepository.getIngredienten(daoGerecht.getId());
+                if(optionalIngredienten.isPresent()) {
+                    watmoetiketen.model.Gerecht gerecht = new watmoetiketen.model.Gerecht();
+                    gerecht.setAantalPersonen(daoGerecht.getAantalPersonen());
+                    gerecht.setGebruikerId(daoGerecht.getGebruikerId());
+                    gerecht.setId(daoGerecht.getId());
+                    gerecht.setNaam(daoGerecht.getNaam());
+                    gerecht.setVis(daoGerecht.getVis());
+                    gerecht.setVlees(daoGerecht.getVlees());
+                    gerecht.setIngredienten(new ArrayList<>(optionalIngredienten.get()));
+                    gerechten.add(gerecht);
+                }
+            }
+            return new ResponseEntity(gerechten, HttpStatus.OK);
         } else {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }

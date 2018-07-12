@@ -10,9 +10,10 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "INGREDIENT", schema="EETDATA")
-@Data
 public class Ingredient {
     
     @Id
@@ -32,8 +33,56 @@ public class Ingredient {
     
     @Column(name = "GERECHT_ID")
     private Integer gerechtId;
-    
+
     @Column(name = "GEBRUIKER_ID")
     private Integer gebruikerId;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNaam() {
+        return naam;
+    }
+
+    public void setNaam(String naam) {
+        this.naam = naam;
+    }
+
+    public Integer getHoeveelheid() {
+        return hoeveelheid;
+    }
+
+    public void setHoeveelheid(Integer hoeveelheid) {
+        this.hoeveelheid = hoeveelheid;
+    }
+
+    public String getEenheid() {
+        return eenheid;
+    }
+
+    public void setEenheid(String eenheid) {
+        this.eenheid = eenheid;
+    }
+
+    public Integer getGerechtId() {
+        return gerechtId;
+    }
+
+    public void setGerechtId(Integer gerechtId) {
+        this.gerechtId = gerechtId;
+    }
+
+    public Integer getGebruikerId() {
+        return gebruikerId;
+    }
+
+    public void setGebruikerId(Integer gebruikerId) {
+        this.gebruikerId = gebruikerId;
+    }
 
 }

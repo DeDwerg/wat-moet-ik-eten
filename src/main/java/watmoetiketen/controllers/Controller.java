@@ -33,7 +33,6 @@ public class Controller {
         return "Dit is de default page waar niemand zou moeten kunnen komen.";
     }
 
-    //v
     @PostMapping(value = "/post/gebruiker")
     public ResponseEntity postGebruiker(@RequestBody Gebruiker gebruiker) {
         ResponseEntity entity = gebruikerRepo.maakNieuweGebruiker(gebruiker);
@@ -42,7 +41,6 @@ public class Controller {
         return entity;
     }
 
-    
     @PostMapping(value = "/login/gebruiker")
     public ResponseEntity login(@RequestBody Gebruiker gebruiker) {
         System.out.println("gebruiker inloggen " + gebruiker.getNaam());
@@ -51,7 +49,7 @@ public class Controller {
     }
 
     @PostMapping(value = "/post/gerecht")
-    public ResponseEntity<Gerecht> postGerecht(@RequestBody Gerecht gerecht) {
+    public ResponseEntity<Gerecht> postGerecht(@RequestBody watmoetiketen.model.Gerecht gerecht) {
         HttpStatus status = gerechtRepo.postNieuwGerecht(gerecht);
         System.out.println("gerecht aanmaken " + gerecht.getNaam() + " " + status);
         return new ResponseEntity(gerecht, status);
@@ -75,5 +73,4 @@ public class Controller {
         System.out.println("gerechten worden opgehaald voor " + gebruiker.getNaam());
         return gerechtRepo.getAlleGerechten(gebruiker);
     }
-
 }
