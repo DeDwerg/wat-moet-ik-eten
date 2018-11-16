@@ -3,12 +3,7 @@ package watmoetiketen.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.extern.slf4j.Slf4j;
 import watmoetiketen.dao.Gebruiker;
@@ -61,10 +56,10 @@ public class Controller {
         return gerechtRepo.zoekRandomGerecht(gebruiker);
     }
 
-    @PostMapping(value = "/verwijder/gerecht/{gebruikerId}")
-    public ResponseEntity verwijderGerecht(@PathVariable int gebruikerId, @RequestBody Gerecht gerecht) {
-        ResponseEntity response = gerechtRepo.verwijderGerecht(gebruikerId, gerecht);
-        System.out.println("verwijder gerecht " + gerecht.getNaam() + response.getStatusCode());
+    @DeleteMapping(value = "/verwijder/gerecht/{gerechtId}")
+    public ResponseEntity verwijderGerecht(@PathVariable int gerechtId) {
+        ResponseEntity response = gerechtRepo.verwijderGerecht(gerechtId);
+        System.out.println("verwijder gerecht " + gerechtId + response.getStatusCode());
         return response;
     }
 
